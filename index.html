@@ -12,14 +12,32 @@
 				padding: 0;
 			}
 			
+			html
+			{
+				font-size: 12pt;
+			}
+			
 			body
 			{
-				width: 50%;
-				height: 90%;
-				border: 2px solid black;
+				width: 700px;
+				height: 900px;
+				border-left: 2px solid black;
+				border-right: 2px solid black;
 				background-color: rgb(150, 240, 240);
 				margin: auto;
-				margin-top: 30px;
+			}
+			
+			header 
+			{
+				padding: 30px 0;
+				margin: auto auto;
+			}
+			
+			header h1
+			{
+				width: 14em;
+				margin: auto;
+				border: 1px solid white;
 			}
 			
 			section 
@@ -28,18 +46,27 @@
 				min-height: 500px;
 				width: 100%;
 				padding: 0;
-				
 				float:right;
 			}
 			
 			canvas 
 			{
-				max-width: 500px;
-				min-width: 200px;
 				border: 1px solid black;
+				display:block;
 				margin: 20px auto;
 			}
 			
+			#gameControls
+			{
+				width: 450px;
+				margin: 10px auto;
+			}
+			
+			#gameControls input[type='button']
+			{
+				margin-right: 15px;
+				width: 8em;
+			}
 		</style>
 	</head>
 	
@@ -50,17 +77,19 @@
 		
 		<main>
 			<section>
-				<canvas id='gameCanvas'>
+				<canvas width='450' height='360' id='gameCanvas' onclick='modifyCanvasOnClick(event);'>
 					<p>Please load this page using a browser that supports the Canvas html element.</p>
 				</canvas>
 				
 				<div id='gameControls'>
-					<form>
+					<form id='gameControls'>
 						<input type='button' value='Start'>
-						<input type='button' value='Redraw' onclick='setupCanvas();'>
+						<input type='button' value='Redraw' onclick='clearGameCanvas(); setupCanvas();'>
 					</form>
 				</div>
 			</section>
+			
+			<p id='outputxy'></p>
 		</main>
 	</body>
 	
