@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang='en'>
+	<head>
+		<meta charset='utf-8'>
+		<link rel='stylesheet' href='gofstyles.css'>
+		<script src='game_of_life.js'></script>
+		<title>Conway's Game Of Life</title>
+		<style>
+			*
+			{
+				margin: 0;
+				padding: 0;
+			}
+			
+			body
+			{
+				width: 50%;
+				height: 90%;
+				border: 2px solid black;
+				background-color: rgb(150, 240, 240);
+				margin: auto;
+				margin-top: 30px;
+			}
+			
+			section 
+			{
+				min-width: 500px;
+				min-height: 500px;
+				width: 100%;
+				padding: 0;
+				
+				float:right;
+			}
+			
+			canvas 
+			{
+				max-width: 500px;
+				min-width: 200px;
+				border: 1px solid black;
+				margin: 20px auto;
+			}
+			
+		</style>
+	</head>
+	
+	<body>
+		<header>
+			<h1>Conway's Game of Life</h1>
+		</header>
+		
+		<main>
+			<section>
+				<canvas id='gameCanvas'>
+					<p>Please load this page using a browser that supports the Canvas html element.</p>
+				</canvas>
+				
+				<div id='gameControls'>
+					<form>
+						<input type='button' value='Start'>
+						<input type='button' value='Redraw' onclick='setupCanvas();'>
+					</form>
+				</div>
+			</section>
+		</main>
+	</body>
+	
+</html>
