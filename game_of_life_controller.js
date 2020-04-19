@@ -5,8 +5,12 @@ window.onload = function()
 };
 
 var tileSize = 15;
+var heightY = 360;
+var widthX = 450;
 var cellColor = 'rgb(210, 70, 210)';
-
+var gameObj = new GameOfLife(tileSize, heightY, widthX);
+var simulationToggled = false;
+var simulationInterval;
 
 /*
 	This function draws a grid over the canvas element with id='gameCanvas'.
@@ -53,9 +57,18 @@ var clearGameCanvas = function()
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-var beginSimulation = function ()
+var toggleSimulation = function()
 {
-	
+	if (simulationToggled)
+	{
+		simulationInterval = window.setInterval(function(){ gameObj.doTurn(); }, 1000);
+		simulationToggled = true;
+	}
+	else
+	{
+		window.clearInterval(simulationInterval);
+		simulationToggled = false;
+	}
 }
 
 /*
@@ -73,6 +86,9 @@ var modifyCanvasOnClick = function(eventObject)
 	
 	context.fillStyle = cellColor;
 	context.fillRect(Math.floor(xPos/15)*15 + 1, Math.floor(yPos/15)*15 + 1, 14, 14);
+	
+	gameObj.toggleCell(Math.floor(xPos/15), Math.floor(yPos/15));
+
 }
 
 var getxy = function(eventObj)
