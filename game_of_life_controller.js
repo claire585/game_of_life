@@ -46,6 +46,41 @@ var setupCanvas = function()
 	}
 };
 
+var redrawBoard = function()
+{
+	clearGameCanvas();
+	setupCanvas();
+	
+	var canvas = document.getElementById('gameCanvas');
+	var context = canvas.getContext('2d');
+	for (var y = 0; y < canvas.height/15; y++)
+	{
+		for (var x = 0; x < canvas.width/15; x++)	
+		{
+			console.log(gameObj.getCellStatus(x, y));
+		}
+		console.log("<br>");
+	}
+	var output = document.getElementById('outputxy');
+				output.innerHTML = "YOLO";
+	//alert("redrawing");
+	
+	context.fillStyle = cellColor;
+	for (var y = 0.5; y < canvas.height; y += 15)
+	{
+		for (var x = 0.5; x < canvas.width; x += 15)
+		{
+			if (gameObj.getCellStatus((x-0.5)/15, (y-0.5)/15))
+			{
+				//alert();
+				var output = document.getElementById('outputxy');
+				output.innerHTML = ""+x+", "+y;
+				context.fillRect(x+.5, y+.5, 14, 14);
+			}
+		}
+	}
+}
+
 /*
 	This function clears the canvas with css selector = "canvas#gameCanvas".
 	It is used as part of the event handler for the Redraw button.
@@ -59,14 +94,14 @@ var clearGameCanvas = function()
 
 var toggleSimulation = function()
 {
-	if (simulationToggled)
+	if (simulationToggled == false)
 	{
-		simulationInterval = window.setInterval(function(){ gameObj.doTurn(); }, 1000);
+		simulationInterval = setInterval(function(){ gameObj.doTurn(); redrawBoard(); }, 1000);
 		simulationToggled = true;
 	}
 	else
 	{
-		window.clearInterval(simulationInterval);
+		clearInterval(simulationInterval);
 		simulationToggled = false;
 	}
 }
@@ -88,6 +123,9 @@ var modifyCanvasOnClick = function(eventObject)
 	context.fillRect(Math.floor(xPos/15)*15 + 1, Math.floor(yPos/15)*15 + 1, 14, 14);
 	
 	gameObj.toggleCell(Math.floor(xPos/15), Math.floor(yPos/15));
+	//alert(Math.floor(xPos/15) + ", " + Math.floor(yPos/15));
+	var output = document.getElementById('outputxy');
+	output.innerHTML = "(" + Math.floor(xPos/15)+ ", "+ Math.floor(yPos/15) +")";
 
 }
 
@@ -97,3 +135,4 @@ var getxy = function(eventObj)
 	output.innerHTML = 'Client X: ' + eventObj.clientX + "  Client Y: " + eventObj.clientY + "<br>"
 		+ 'Screen X: ' + eventObj.screenX + "  Screen Y: " + eventObj.screenY;
 }
+

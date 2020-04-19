@@ -29,7 +29,7 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 	}
 	
 	this.getCellStatus = function(x, y) {
-		return this.gameBoard[y][x];
+		return this.gameBoard[y][x].currentTurn;
 	}
 	
 	this.toggleCell = function(x, y)
@@ -39,31 +39,31 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 	
 	this.doTurn = function(){
 		var numAdjacentCells = 0;
-		for (var y = 0; y < height; y++)
+		for (var y = 0; y < this.height; y++)
 		{
-			for (var x = 0; x < width; x++)
+			for (var x = 0; x < this.width; x++)
 			{
 				numAdjacentCells = 0;
 				//Find number of neighbors of current cell.
 			
 				if (x != 0)
 				{
-					if (this.getCellStatus(x-1, y).currentTurn)
+					if (this.getCellStatus(x-1, y))
 					{
 						numAdjacentCells++;
 					}
 					
 					if (y != 0)
 					{
-						if (this.getCellStatus(x-1, y-1).currentTurn)
+						if (this.getCellStatus(x-1, y-1))
 						{
 							numAdjacentCells++;
 						}
 					}
 					
-					if (y != height - 1)
+					if (y != this.height - 1)
 					{
-						if (this.getCellStatus(x-1, y+1).currentTurn)
+						if (this.getCellStatus(x-1, y+1))
 						{
 							numAdjacentCells++;
 						}
@@ -72,38 +72,38 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 				
 				if (y != 0)
 				{
-					if (this.getCellStatus(x, y-1).currentTurn)
+					if (this.getCellStatus(x, y-1))
 					{
 						 numAdjacentCells++;
 					}
 				}
 				
-				if (y != height - 1)
+				if (y != this.height - 1)
 				{
-					if (this.getCellStatus(x, y+1).currentTurn)
+					if (this.getCellStatus(x, y+1))
 					{
 						numAdjacentCells++;
 					}
 					
-					if (x != width - 1)
+					if (x != this.width - 1)
 					{
-						if (this.getCellStatus(x+1, y+1).currentTurn)
+						if (this.getCellStatus(x+1, y+1))
 						{
 							numAdjacentCells++;
 						}
 					}
 				}
 				
-				if (x != width+1)
+				if (x != this.width-1)
 				{
-					if (this.getCellStatus(x+1, y).currentTurn)
+					if (this.getCellStatus(x+1, y))
 					{
 						numAdjacentCells++;
 					}
 					
 					if (y != 0)
 					{
-						if (this.getCellStatus(x+1, y-1).currentTurn)
+						if (this.getCellStatus(x+1, y-1))
 						{
 							numAdjacentCells++;
 						}
@@ -120,21 +120,25 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 					(Source: https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 				**/
 				
-				if (this.getCellStatus(x, y).currentTurn == true)
+				if (this.getCellStatus(x, y))
 				{
+					//alert("For cell (" + x + ", " + y + "): AdjCells=" + numAdjacentCells);
 					//A live cell with fewer than 2 neighbors dies.
 					if (numAdjacentCells < 2)
 					{
+						console.log("(" + x + ", " + y + ") == false");
 						this.gameBoard[y][x].nextTurn = false;
 					}
 					//A live cell with greater than three neighbors dies.
 					else if (numAdjacentCells > 3)
 					{
+						//console.log("(" + x + ", " + y + ") == false");
 						this.gameBoard[y][x].nextTurn = false;
 					}
 					//A live cell with 2 or 3 neightbors lives.
 					else
 					{
+						//console.log("(" + x + ", " + y + ") == true");
 						this.gameBoard[y][x].nextTurn = true;
 					}
 				}
@@ -143,11 +147,13 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 					//A dead cell with 3 neighbors lives.
 					if (numAdjacentCells == 3)
 					{
+						//console.log("(" + x + ", " + y + ") == true");
 						this.gameBoard[y][x].nextTurn = true;
 					}
 					//Dead cells that do not have three neighbors stay dead.
 					else
 					{
+						//console.log("(" + x + ", " + y + ") == false");
 						this.gameBoard[y][x].nextTurn = false;
 					}
 				}
@@ -159,10 +165,11 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 		
 		//This set of loops updates the currentTurn field of each game board tile.
 		//The currentTurn field takes the value of the nextTurn field, which was calculated in the previous set of nested loops.
-		for (var y = 0; y < height; y++)
+		for (var y = 0; y < this.height; y++)
 		{
-			for (var x = 0; x < width; x++)
+			for (var x = 0; x < this.width; x++)
 			{
+				//alert("" + x + " " + y);
 				this.gameBoard[y][x].currentTurn = this.gameBoard[y][x].nextTurn;
 				this.gameBoard[y][x].nextTurn = false;
 			}
