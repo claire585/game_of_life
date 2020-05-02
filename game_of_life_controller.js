@@ -1,21 +1,25 @@
 
+/*
+	Sets up the game board GUI when the DOM is ready.
+*/
 window.onload = function()
 {
 	setupCanvas();
 };
 
 var tileSize = 15;
-var heightY = 360;
-var widthX = 450;
+var heightY = 390;
+var widthX = 480;
 var cellColor = 'rgb(210, 70, 210)';
 var gameObj = new GameOfLife(tileSize, heightY, widthX);
 var simulationToggled = false;
 var simulationInterval;
 
+
 /*
 	This function draws a grid over the canvas element with id='gameCanvas'.
 	It sets up an empty "game board" for the Game of Life.
-	This function serves as the onclick event handler for the Redraw button.
+	This function serves as part of the onclick event handler for the Redraw button.
 */
 var setupCanvas = function()
 {
@@ -26,17 +30,17 @@ var setupCanvas = function()
 	context.strokeStyle = 'black';
 	
 	var posY = 0.5;
-	while (posY < canvas.height)
+	while (posY <= canvas.height + 0.5)
 	{
 		context.beginPath();
-		context.moveTo(.5, posY);
+		context.moveTo(0, posY);
 		context.lineTo(canvas.width, posY);
 		context.stroke();
 		posY += (tileSize);
 	}
 	
 	var posX = 0.5;
-	while (posX < canvas.width)
+	while (posX <= canvas.width + 0.5)
 	{
 		context.beginPath();
 		context.moveTo(posX, 0);
@@ -46,40 +50,44 @@ var setupCanvas = function()
 	}
 };
 
+
+/*
+	This function redraws the entire game board based on the values in the 
+		underlying gameObj. For each tile on the GUI board, the underlying element
+		of gameObj is examined to see if the cell is alive or dead. If the cell is
+		alive, the GUI game board tile is filled in; if the cell is dead, the game board
+		tile is left empty.
+	This function is called periodically after the user starts the simulation, after 
+		each time the rules of the game are applied to the gameObj (cells are updated,
+		killed or made alive).
+*/
 var redrawBoard = function()
 {
+	//First clear the entire canvas...
 	clearGameCanvas();
+	
+	//Draw the grid lines on the board.
 	setupCanvas();
 	
+	//Get canvas and context.
 	var canvas = document.getElementById('gameCanvas');
 	var context = canvas.getContext('2d');
-	for (var y = 0; y < canvas.height/15; y++)
-	{
-		for (var x = 0; x < canvas.width/15; x++)	
-		{
-			console.log(gameObj.getCellStatus(x, y));
-		}
-		console.log("<br>");
-	}
-	var output = document.getElementById('outputxy');
-				output.innerHTML = "YOLO";
-	//alert("redrawing");
-	
 	context.fillStyle = cellColor;
-	for (var y = 0.5; y < canvas.height; y += 15)
+	
+	//Loop through the game board tiles on the canvas and fill the tile in
+	//	if the underlying cell is alive.
+	for (var y = 0.5; y < canvas.height - 1; y += 15)
 	{
-		for (var x = 0.5; x < canvas.width; x += 15)
+		for (var x = 0.5; x < canvas.width - 1; x += 15)
 		{
 			if (gameObj.getCellStatus((x-0.5)/15, (y-0.5)/15))
 			{
-				//alert();
-				var output = document.getElementById('outputxy');
-				output.innerHTML = ""+x+", "+y;
 				context.fillRect(x+.5, y+.5, 14, 14);
 			}
 		}
 	}
 }
+
 
 /*
 	This function clears the canvas with css selector = "canvas#gameCanvas".
@@ -92,17 +100,29 @@ var clearGameCanvas = function()
 	context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
+
+/*
+	Event handler for the Start/Stop button.
+	
+	When clicked:
+		If the simulation is OFF, begins the simulation by making the game object gameObj
+		update (take its "turn") every second, and then redrawing the game board after each turn.
+		
+		If the simulation is ON, stops the game turn + GUI update cycle.
+*/
 var toggleSimulation = function()
 {
 	if (simulationToggled == false)
 	{
 		simulationInterval = setInterval(function(){ gameObj.doTurn(); redrawBoard(); }, 1000);
 		simulationToggled = true;
+		document.getElementById('toggleSimulationButton').setAttribute('value', 'Stop');
 	}
 	else
 	{
 		clearInterval(simulationInterval);
 		simulationToggled = false;
+		document.getElementById('toggleSimulationButton').setAttribute('value', 'Start');
 	}
 }
 
@@ -134,11 +154,6 @@ var modifyCanvasOnClick = function(eventObject)
 	{
 		context.clearRect( Math.floor(xPos/15)*15 + 1, Math.floor(yPos/15)*15 + 1, 14, 14 )
 	}
-	
-	//Debug output
-	//alert(Math.floor(xPos/15) + ", " + Math.floor(yPos/15));
-	var output = document.getElementById('outputxy');
-	output.innerHTML = "(" + Math.floor(xPos/15)+ ", "+ Math.floor(yPos/15) +")";
 
 }
 

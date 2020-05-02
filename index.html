@@ -39,6 +39,8 @@
 				width: 14em;
 				margin: auto;
 				border: 1px solid white;
+				text-align: center;
+				padding: .5em;
 			}
 			
 			section 
@@ -52,9 +54,10 @@
 			
 			canvas 
 			{
-				border: 1px solid black;
+				border: 0px solid black;
 				display:block;
 				margin: 20px auto;
+				padding: 0;
 			}
 			
 			#gameControls
@@ -78,13 +81,13 @@
 		
 		<main>
 			<section>
-				<canvas width='450' height='360' id='gameCanvas' onclick='modifyCanvasOnClick(event);'>
+				<canvas width='481' height='391' id='gameCanvas' onclick='modifyCanvasOnClick(event);'>
 					<p>Please load this page using a browser that supports the Canvas html element.</p>
 				</canvas>
 				
 				<div id='gameControls'>
 					<form id='gameControls'>
-						<input type='button' value='Start' onclick='toggleSimulation();'>
+						<input id='toggleSimulationButton' type='button' value='Start' onclick='toggleSimulation();'>
 						<input type='button' value='Redraw' onclick='clearGameCanvas(); setupCanvas();'>
 					</form>
 				</div>

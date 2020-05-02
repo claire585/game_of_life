@@ -57,7 +57,10 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 			this.gameBoard[y][x].currentTurn = true;
 	}
 	
-	
+	/*
+		Play a turn of the Game of Life by updating each cell's status according to the
+			Game of Life rules.
+	*/
 	this.doTurn = function(){
 		var numAdjacentCells = 0;
 		for (var y = 0; y < this.height; y++)
@@ -147,7 +150,7 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 					//A live cell with fewer than 2 neighbors dies.
 					if (numAdjacentCells < 2)
 					{
-						console.log("(" + x + ", " + y + ") == false");
+						//console.log("(" + x + ", " + y + ") == false");
 						this.gameBoard[y][x].nextTurn = false;
 					}
 					//A live cell with greater than three neighbors dies.
