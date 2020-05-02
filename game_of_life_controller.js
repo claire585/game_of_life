@@ -116,13 +116,26 @@ var modifyCanvasOnClick = function(eventObject)
 	var canvas = document.getElementById('gameCanvas');
 	var context = canvas.getContext('2d');
 	
+	//xPos and yPos are in pixels
+	//The position of the mouse, in pixels, within the canvas
 	var xPos = eventObject.clientX - canvas.getBoundingClientRect().left;
 	var yPos = eventObject.clientY - canvas.getBoundingClientRect().top ;
 	
-	context.fillStyle = cellColor;
-	context.fillRect(Math.floor(xPos/15)*15 + 1, Math.floor(yPos/15)*15 + 1, 14, 14);
-	
+	//Toggle the current tile on the game board.
 	gameObj.toggleCell(Math.floor(xPos/15), Math.floor(yPos/15));
+	
+	//Fill in the tile.
+	if (gameObj.getCellStatus(Math.floor(xPos/15), Math.floor(yPos/15)) == true)
+	{
+		context.fillStyle = cellColor;
+		context.fillRect(Math.floor(xPos/15)*15 + 1, Math.floor(yPos/15)*15 + 1, 14, 14);
+	}
+	else
+	{
+		context.clearRect( Math.floor(xPos/15)*15 + 1, Math.floor(yPos/15)*15 + 1, 14, 14 )
+	}
+	
+	//Debug output
 	//alert(Math.floor(xPos/15) + ", " + Math.floor(yPos/15));
 	var output = document.getElementById('outputxy');
 	output.innerHTML = "(" + Math.floor(xPos/15)+ ", "+ Math.floor(yPos/15) +")";

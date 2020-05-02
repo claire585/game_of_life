@@ -1,3 +1,5 @@
+
+//Constructor for GameOfLife class. 
 function GameOfLife(tileSizePX, heightPX, widthPX)
 {
 	/*
@@ -15,10 +17,17 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 		(0, height)..................... (width, height)
 	
 	*/
+	
+	//Get width and height of the board in "tiles" (not pixels)
 	this.width = Math.ceil(widthPX/tileSizePX);
 	this.height = Math.ceil(heightPX/tileSizePX);
 	this.gameBoard = new Array(this.height);
 	
+	/*
+		Initialize each tile on the board to contain a "dead" cell.
+		Each tile contains an object which specifies the status of the cell during 
+			the current turn and the previous turn. True==Alive, False==dead.
+	*/
 	for (var i = 0; i < this.height; i++)
 	{
 		this.gameBoard[i] = new Array(this.width);
@@ -28,14 +37,26 @@ function GameOfLife(tileSizePX, heightPX, widthPX)
 		}
 	}
 	
+	/*
+		Returns the status of the cell at row=x and col=y.
+		Returns True for an alive cell; False for a dead cell.
+	*/
 	this.getCellStatus = function(x, y) {
 		return this.gameBoard[y][x].currentTurn;
 	}
 	
+	/*
+		Make a dead cell alive and an alive cell dead.
+		Invoked when the user clicks on a tile on the board.
+	*/
 	this.toggleCell = function(x, y)
 	{
-		this.gameBoard[y][x].currentTurn = true;
+		if (this.gameBoard[y][x].currentTurn == true)
+			this.gameBoard[y][x].currentTurn = false;
+		else	
+			this.gameBoard[y][x].currentTurn = true;
 	}
+	
 	
 	this.doTurn = function(){
 		var numAdjacentCells = 0;
