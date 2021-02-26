@@ -27,7 +27,7 @@ var setupCanvas = function()
 	var context = canvas.getContext('2d');
 	
 	context.lineWidth = 1;
-	context.strokeStyle = 'black';
+	context.strokeStyle = 'rgb(0, 80, 80)';
 	
 	var posY = 0.5;
 	while (posY <= canvas.height + 0.5)
